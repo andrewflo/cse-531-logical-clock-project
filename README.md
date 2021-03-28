@@ -14,32 +14,33 @@ From the project root directory:
 
 The input file should be in `.json` format and is passed to the program via a command line argument.
 
-`venv` is used to sandbox the Python project and dependencies in a virtual environment.
-
 ## Overview
 
-The following key files are included in this project:
+### File Descriptions
 
-#### `main.py`:
+The following important files are included in this project:
 
-Main program to be executed from the command line with: `python main.py input.json`
+* `main.py`: Main program to be executed from the command line with: `python main.py input.json`
 
-#### `branch.proto`:
+* `input.json`: Input file containing a list of branch processes and customer processes with transaction events.
 
-Protocol buffer file defining RPC messages & services. This file has already been compiled to produce the `branch_pb2.py` & `branch_pb2_grpc.py` files.
+* `output.txt`: The output file containing each Customer's `recvMsg` output. This file will be overwritten each time the program is ran.
 
-#### `Branch.py`:
+* `branch.proto`: Protocol buffer file defining RPC messages & services. This file has already been compiled to produce the `branch_pb2.py` & `branch_pb2_grpc.py` files.
 
-Branch class served as a gRPC server to processes customer transactions and propagate them to other branches.
+* `Branch.py`: Branch class served as a gRPC server to process customer transactions and propagate them to other branches.
 
-#### `Customer.py`:
+* `Customer.py`: Customer class with gRPC client branch stub to send transaction requests to its corresponding bank branch.
 
-Customer class with gRPC client stubs to send transaction events to the bank branch.
+### Python Environment
 
-#### `input.json`:
+Python 3 is required for this project. `venv` is used to sandbox the Python project and dependencies in a virtual environment.
 
-Input file containing a list of branch processes and customer processes with transaction events.
+In order to use the included Python version and project dependency files, the virtual environment must be activated before the program is ran:
 
-#### `output.txt`:
+```sh
+# From project root
+source bin/activate
+```
 
-The output file containing each Customer's `recvMsg` list. This file will be overwritten each time the program is ran.
+For more information, please refer to the [12. Virtual Environments and Packages](https://docs.python.org/3/tutorial/venv.html) page of the official Python documentation.
