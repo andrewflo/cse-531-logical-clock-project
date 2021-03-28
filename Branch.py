@@ -19,7 +19,7 @@ class Branch(branch_pb2_grpc.BranchServicer):
 
     def MsgDelivery(self, request, context):
         return branch_pb2.MsgResponse(
-            interface=request["interface"], result="success", money=self.balance
+            interface=request.interface, result="success", money=self.balance
         )
 
     def Propagate_Withdraw(self):
