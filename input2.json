@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "type": "branch",
+    "balance": 400
+  },
+  {
+    "id": 1,
+    "type": "customer",
+    "events": [
+      { "id": 1, "interface": "query", "money": 400 }
+    ]
+  }
+]
