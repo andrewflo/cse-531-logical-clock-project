@@ -12,11 +12,59 @@ From the project root directory:
 2. Start the program with: `python main.py input.json`
 3. The result will be written to the output file: `output.txt`
 
-The input file should be in `.json` format and is passed to the program via a command line argument.
-
 ## Overview
 
-### File Descriptions
+### Input File
+
+The input file should be in `.json` format and is passed to the program via a command line argument.
+
+The following `input.json` file is included from the CSE 531 gRPC Project instructions:
+
+```json
+[
+  {
+    "id": 1,
+    "type": "customer",
+    "events": [
+      { "id": 1, "interface": "query", "money": 400 }
+    ]
+  },
+  {
+    "id": 2,
+    "type": "customer",
+    "events": [
+      { "id": 2, "interface": "deposit", "money": 170 },
+      { "id": 3, "interface": "query", "money": 400 }
+    ]
+  },
+  {
+    "id": 3,
+    "type": "customer",
+    "events": [
+      { "id": 4, "interface": "withdraw", "money": 70 },
+      { "id": 5, "interface": "query", "money": 400 }
+    ]
+  },
+  {
+    "id": 1,
+    "type": "branch",
+    "balance": 400
+  },
+  {
+    "id": 2,
+    "type": "branch",
+    "balance": 400
+  },
+  {
+    "id": 3,
+    "type": "branch",
+    "balance": 400
+  }
+]
+
+```
+
+### Important File Descriptions
 
 The following important files are included in this project:
 
