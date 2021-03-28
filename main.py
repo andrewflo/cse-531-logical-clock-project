@@ -3,6 +3,7 @@ import json
 import multiprocessing
 from time import sleep
 from concurrent import futures
+from termcolor import colored
 
 import grpc
 
@@ -15,7 +16,7 @@ def serveBranch(branch):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     branch_pb2_grpc.add_BranchServicer_to_server(branch, server)
     port = str(50000 + branch.id)
-    print("Serving branch #" + str(branch.id) + " at [::]:" + port)
+    print(colored("Serving branch #" + str(branch.id) + " at [::]:" + port, "green"))
     server.add_insecure_port("[::]:" + port)
     server.start()
     server.wait_for_termination()
@@ -28,26 +29,41 @@ def serveCustomer(customer):
 
 def createProcesses(processes):
     customers = []
+    customerProcesses = []
     branches = []
+    branchProcesses = []
+
+    # Branch processes need to be spawned before Customer processes
+    for process in processes:
+        if process["type"] == "branch":
+            branch = Branch(process["id"], process["balance"], branches)
+            branches.append(branch)
+
+    for branch in branches:
+        branch_process = multiprocessing.Process(target=serveBranch, args=(branch,))
+        branchProcesses.append(branch_process)
+        branch_process.start()
 
     for process in processes:
         if process["type"] == "customer":
             customer = Customer(process["id"], process["events"])
             customers.append(customer)
-        elif process["type"] == "branch":
-            branch = Branch(process["id"], process["balance"], branches)
-            branches.append(branch)
 
-    # Branch processes need to be spawned before Customer processes
-    for branch in branches:
-        branch_process = multiprocessing.Process(target=serveBranch, args=(branch,))
-        branch_process.start()
+    # Allow branch processes to fully start
+    sleep(0.25)
 
     for customer in customers:
         customer_process = multiprocessing.Process(
             target=serveCustomer, args=(customer,)
         )
+        customerProcesses.append(customer_process)
         customer_process.start()
+
+    for customerProcess in customerProcesses:
+        customerProcess.join()
+
+    for branchProcess in branchProcesses:
+        branchProcess.terminate()
 
 
 if __name__ == "__main__":

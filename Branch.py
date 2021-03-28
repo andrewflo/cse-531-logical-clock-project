@@ -1,5 +1,7 @@
 from concurrent import futures
+
 import grpc
+
 import branch_pb2
 import branch_pb2_grpc
 

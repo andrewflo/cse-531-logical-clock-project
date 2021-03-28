@@ -1,4 +1,6 @@
 import grpc
+from termcolor import colored
+
 import branch_pb2
 import branch_pb2_grpc
 
@@ -18,7 +20,9 @@ class Customer:
         port = str(50000 + self.id)
         channel = grpc.insecure_channel("localhost:" + port)
         self.stub = branch_pb2_grpc.BranchStub(channel)
-        print("Customer #" + str(self.id) + " on branch at [::]:" + port)
+        print(
+            colored("Customer #" + str(self.id) + " on branch at [::]:" + port, "blue")
+        )
 
     def executeEvents(self):
         for event in self.events:
@@ -29,6 +33,3 @@ class Customer:
                 )
             )
             print(response)
-
-    def print(self):
-        print(self.id, self.events)
