@@ -20,9 +20,23 @@ class Branch(branch_pb2_grpc.BranchServicer):
         self.recvMsg = list()
 
     def MsgDelivery(self, request, context):
-        return branch_pb2.MsgResponse(
-            interface=request.interface, result="success", money=self.balance
-        )
+        result = "success"
+
+        if request.money < 0:
+            result = "fail"
+        elif request.interface == "query":
+            pass
+        elif request.interface == "deposit":
+            self.balance += request.money
+        elif request.interface == "withdraw":
+            if self.balance >= request.money:
+                self.balance -= request.money
+            else:
+                result = "fail"
+        else:
+            result = "fail"
+
+        return branch_pb2.MsgResponse(interface=request.interface, result=result, money=self.balance)
 
     def Propagate_Withdraw(self):
         pass

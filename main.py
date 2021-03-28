@@ -16,7 +16,7 @@ def serveBranch(branch):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     branch_pb2_grpc.add_BranchServicer_to_server(branch, server)
     port = str(50000 + branch.id)
-    print(colored("Serving branch #" + str(branch.id) + " at [::]:" + port, "green"))
+    print(colored("Serving branch #" + str(branch.id) + " on :" + port, "green"))
     server.add_insecure_port("[::]:" + port)
     server.start()
     server.wait_for_termination()
@@ -53,9 +53,7 @@ def createProcesses(processes):
     sleep(0.25)
 
     for customer in customers:
-        customer_process = multiprocessing.Process(
-            target=serveCustomer, args=(customer,)
-        )
+        customer_process = multiprocessing.Process(target=serveCustomer, args=(customer,))
         customerProcesses.append(customer_process)
         customer_process.start()
 

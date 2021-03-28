@@ -5,6 +5,7 @@ message MsgRequest {
 	string interface = 2;
 	int32 money = 3;
 }
+
 message MsgResponse {
 	string interface = 1;
 	string result = 2;

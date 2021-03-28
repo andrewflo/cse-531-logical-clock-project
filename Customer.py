@@ -20,16 +20,13 @@ class Customer:
         port = str(50000 + self.id)
         channel = grpc.insecure_channel("localhost:" + port)
         self.stub = branch_pb2_grpc.BranchStub(channel)
-        print(
-            colored("Customer #" + str(self.id) + " on branch at [::]:" + port, "blue")
-        )
+        print(colored("Customer #" + str(self.id) + " on branch on :" + port, "blue"))
 
     def executeEvents(self):
         for event in self.events:
             print(event)
             response = self.stub.MsgDelivery(
-                branch_pb2.MsgRequest(
-                    id=event["id"], interface=event["interface"], money=event["money"]
-                )
+                branch_pb2.MsgRequest(id=self.id, interface=event["interface"], money=event["money"])
             )
             print(response)
+            self.recvMsg.append(response)

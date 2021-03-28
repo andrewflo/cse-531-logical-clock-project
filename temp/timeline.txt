@@ -1,0 +1,7 @@
+Customer-#
+Time-------------------------------------------------------------->
+C-1 [Query] ----------3 sec sleep---------------query done.
+C-2 [Deposit] -done--[Query] ----------3 sec sleep---------------query done.
+C-3 [Withdraw]-done--[Query] ----------3 sec sleep---------------query done.
+
+Customer 2 and 3 will finish their execution before the end 3-second sleep for customer 1 (C-1) 
