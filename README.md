@@ -6,11 +6,12 @@ CSE 531: Distributed and Multiprocessor Operating Systems (Spring 2021 - B)
 
 ## Quick Start
 
-From the project root directory:
-
-1. Activate the virtual environment with: `source bin/activate`
-2. Start the program with: `python main.py input.json`
-3. The result will be written to the output file: `output.txt`
+1. `git clone` the repo and `cd` into the repo directory
+2. `python3 -m venv env` to initialize the virtual environment
+3. `source env/bin/activate` to activate the virtual environment
+4. `pip install -r requirements.txt` to install project dependencies
+5. `python main.py input.json` to start the program
+6. The result will be written to `output.txt`
 
 ## Overview
 
@@ -84,11 +85,19 @@ The following important files are included in this project:
 
 Python 3 is required for this project. `venv` is used to sandbox the Python project and dependencies in a virtual environment.
 
-In order to use the included Python version and project dependency files, the virtual environment must be activated before the program is ran:
+In order to use the included Python version and project dependency files, the virtual environment must be initialized and activated before the program is ran.
+
+From the project root:
 
 ```sh
-# From project root
-source bin/activate
+# Initialize the Python virtual environment
+python3 -m venv env
+
+# Activate the virtual environment
+source env/bin/activate
+
+# Install project dependencies in the virtual environment
+pip install -r requirements.txt
 ```
 
 For more information, please refer to the [12. Virtual Environments and Packages](https://docs.python.org/3/tutorial/venv.html) page of the official Python documentation.
