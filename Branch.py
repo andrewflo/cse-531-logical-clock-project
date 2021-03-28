@@ -1,25 +1,38 @@
 from concurrent import futures
 
 import grpc
+from termcolor import colored
 
-import branch_pb2
 import branch_pb2_grpc
+from branch_pb2 import MsgRequest, MsgResponse
 
 
 class Branch(branch_pb2_grpc.BranchServicer):
     def __init__(self, id, balance, branches):
-        # unique ID of the Branch
         self.id = id
-        # replica of the Branch's balance
         self.balance = balance
-        # the list of process IDs of the branches
         self.branches = branches
-        # the list of Client stubs to communicate with the branches
         self.stubList = list()
-        # a list of received messages used for debugging purpose
         self.recvMsg = list()
 
+    # Setup gRPC channel & client stub for each branch
+    def createStubs(self):
+        for branchId in self.branches:
+            if branchId != self.id:
+                port = str(50000 + branchId)
+                channel = grpc.insecure_channel("localhost:" + port)
+                self.stubList.append(branch_pb2_grpc.BranchStub(channel))
+
+    # Incoming MsgRequest from Customer transaction
     def MsgDelivery(self, request, context):
+        return self.ProcessMsg(request, True)
+
+    # Incoming MsgRequest from Branch propagation
+    def MsgPropagation(self, request, context):
+        return self.ProcessMsg(request, False)
+
+    # Handle received Msg, generate and return a MsgResponse
+    def ProcessMsg(self, request, propagate):
         result = "success"
 
         if request.money < 0:
@@ -28,18 +41,40 @@ class Branch(branch_pb2_grpc.BranchServicer):
             pass
         elif request.interface == "deposit":
             self.balance += request.money
+            if propagate == True:
+                self.Propagate_Deposit(request)
         elif request.interface == "withdraw":
             if self.balance >= request.money:
                 self.balance -= request.money
+                if propagate == True:
+                    self.Propagate_Withdraw(request)
             else:
                 result = "fail"
         else:
             result = "fail"
 
-        return branch_pb2.MsgResponse(interface=request.interface, result=result, money=self.balance)
+        # print(
+        #     colored(
+        #         "Branch #"
+        #         + str(self.id)
+        #         + "\t"
+        #         + request.interface
+        #         + ": "
+        #         + str(request.money)
+        #         + "\t New balance:"
+        #         + str(self.balance),
+        #         ("magenta" if propagate else "cyan"),
+        #     )
+        # )
 
-    def Propagate_Withdraw(self):
-        pass
+        return MsgResponse(interface=request.interface, result=result, money=self.balance)
 
-    def Propagate_Deposit(self):
-        pass
+    # Propagate Customer withdraw to other Branches
+    def Propagate_Withdraw(self, request):
+        for stub in self.stubList:
+            stub.MsgPropagation(MsgRequest(id=request.id, interface="withdraw", money=request.money))
+
+    # Propagate Customer deposit to other Branches
+    def Propagate_Deposit(self, request):
+        for stub in self.stubList:
+            stub.MsgPropagation(MsgRequest(id=request.id, interface="deposit", money=request.money))

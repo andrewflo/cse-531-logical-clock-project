@@ -19,6 +19,11 @@ class BranchStub(object):
                 request_serializer=branch__pb2.MsgRequest.SerializeToString,
                 response_deserializer=branch__pb2.MsgResponse.FromString,
                 )
+        self.MsgPropagation = channel.unary_unary(
+                '/Branch/MsgPropagation',
+                request_serializer=branch__pb2.MsgRequest.SerializeToString,
+                response_deserializer=branch__pb2.MsgResponse.FromString,
+                )
 
 
 class BranchServicer(object):
@@ -30,11 +35,22 @@ class BranchServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def MsgPropagation(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_BranchServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'MsgDelivery': grpc.unary_unary_rpc_method_handler(
                     servicer.MsgDelivery,
+                    request_deserializer=branch__pb2.MsgRequest.FromString,
+                    response_serializer=branch__pb2.MsgResponse.SerializeToString,
+            ),
+            'MsgPropagation': grpc.unary_unary_rpc_method_handler(
+                    servicer.MsgPropagation,
                     request_deserializer=branch__pb2.MsgRequest.FromString,
                     response_serializer=branch__pb2.MsgResponse.SerializeToString,
             ),
@@ -60,6 +76,23 @@ class Branch(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/Branch/MsgDelivery',
+            branch__pb2.MsgRequest.SerializeToString,
+            branch__pb2.MsgResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def MsgPropagation(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Branch/MsgPropagation',
             branch__pb2.MsgRequest.SerializeToString,
             branch__pb2.MsgResponse.FromString,
             options, channel_credentials,
