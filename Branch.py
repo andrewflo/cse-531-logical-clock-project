@@ -67,6 +67,15 @@ class Branch(branch_pb2_grpc.BranchServicer):
         #     )
         # )
 
+        # Create msg to be appended to self.recvMsg list
+        msg = {"interface": request.interface, "result": result}
+
+        # Add 'money' entry for 'query' events
+        if request.interface == "query":
+            msg["money"] = request.money
+
+        self.recvMsg.append(msg)
+
         return MsgResponse(interface=request.interface, result=result, money=self.balance)
 
     # Propagate Customer withdraw to other Branches
