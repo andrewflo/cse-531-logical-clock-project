@@ -53,20 +53,6 @@ class Branch(branch_pb2_grpc.BranchServicer):
         else:
             result = "fail"
 
-        # print(
-        #     colored(
-        #         "Branch #"
-        #         + str(self.id)
-        #         + "\t"
-        #         + request.interface
-        #         + ": "
-        #         + str(request.money)
-        #         + "\t New balance:"
-        #         + str(self.balance),
-        #         ("magenta" if propagate else "cyan"),
-        #     )
-        # )
-
         # Create msg to be appended to self.recvMsg list
         msg = {"interface": request.interface, "result": result}
 

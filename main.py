@@ -15,12 +15,10 @@ from Customer import Customer
 # Start branch gRPC server process
 def serveBranch(branch):
     branch.createStubs()
+
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     branch_pb2_grpc.add_BranchServicer_to_server(branch, server)
     port = str(50000 + branch.id)
-
-    # print(colored("Serving branch #" + str(branch.id) + " on :" + port, "green"))
-
     server.add_insecure_port("[::]:" + port)
     server.start()
     server.wait_for_termination()

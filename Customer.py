@@ -20,8 +20,6 @@ class Customer:
         channel = grpc.insecure_channel("localhost:" + port)
         self.stub = branch_pb2_grpc.BranchStub(channel)
 
-        # print(colored("Customer #" + str(self.id) + " on branch on :" + port, "blue"))
-
     # Send gRPC request for each event
     def executeEvents(self):
         for event in self.events:
