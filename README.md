@@ -17,6 +17,22 @@ CSE 531: Distributed and Multiprocessor Operating Systems
 
 ## Overview
 
+### Important Files
+
+The following important files are included in this project:
+
+* `main.py`: Main program to be executed from the command line with: `python main.py input.json`
+
+* `input.json`: Input file containing a list of branch processes and customer processes with transaction events.
+
+* `output.txt`: The output file containing each Customer's `recvMsg` output. This file will be overwritten each time the program is ran.
+
+* `branch.proto`: Protocol buffer file defining RPC messages & services. This file has already been compiled to produce the `branch_pb2.py` & `branch_pb2_grpc.py` files.
+
+* `Branch.py`: Branch class served as a gRPC server to process customer transactions and propagate them to other branches.
+
+* `Customer.py`: Customer class with gRPC client branch stub to send transaction requests to its corresponding bank branch.
+
 ### Input File
 
 The input file should be in `.json` format and is passed to the program via a command line argument.
@@ -66,22 +82,6 @@ The following `input.json` file is included from the CSE 531 gRPC Project instru
 ]
 
 ```
-
-### Important File Descriptions
-
-The following important files are included in this project:
-
-* `main.py`: Main program to be executed from the command line with: `python main.py input.json`
-
-* `input.json`: Input file containing a list of branch processes and customer processes with transaction events.
-
-* `output.txt`: The output file containing each Customer's `recvMsg` output. This file will be overwritten each time the program is ran.
-
-* `branch.proto`: Protocol buffer file defining RPC messages & services. This file has already been compiled to produce the `branch_pb2.py` & `branch_pb2_grpc.py` files.
-
-* `Branch.py`: Branch class served as a gRPC server to process customer transactions and propagate them to other branches.
-
-* `Customer.py`: Customer class with gRPC client branch stub to send transaction requests to its corresponding bank branch.
 
 ### Python Environment
 
