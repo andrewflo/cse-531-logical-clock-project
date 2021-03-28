@@ -43,6 +43,6 @@ class Customer:
 
             self.recvMsg.append(msg)
 
-    # Print self.recvMsg list
-    def printMsgs(self):
-        print(colored("#" + str(self.id) + ": ", "blue") + str(self.recvMsg))
+    # Generate output msg
+    def output(self):
+        return {"id": self.id, "recv": self.recvMsg}

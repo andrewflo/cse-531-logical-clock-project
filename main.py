@@ -30,7 +30,12 @@ def serveBranch(branch):
 def serveCustomer(customer):
     customer.createStub()
     customer.executeEvents()
-    customer.printMsgs()
+
+    output = customer.output()
+    output_file = open("output.txt", "a")
+    output_file.write(str(output) + "\n")
+    output_file.close()
+    # print(str(output))
 
 
 # Parse JSON & create objects/processes
@@ -92,6 +97,11 @@ if __name__ == "__main__":
     try:
         # Load JSON file from 'input_file' arg
         input = json.load(open(args.input_file))
+
+        # Initialize output file
+        open("output.txt", "w").close()
+
+        # Create objects/processes from input file
         createProcesses(input)
     except FileNotFoundError:
         print(colored("Could not find input file '" + args.input_file + "'", "red"))
