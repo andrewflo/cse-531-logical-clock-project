@@ -1,8 +1,10 @@
 <h1>CSE 531: gRPC Project</h1>
 
-Author: **Andrew Flores**
+Andrew Flores, Spring 2021 B
 
-CSE 531: Distributed and Multiprocessor Operating Systems (Spring 2021 - B)
+CSE 531: Distributed and Multiprocessor Operating Systems
+
+
 
 ## Quick Start
 
