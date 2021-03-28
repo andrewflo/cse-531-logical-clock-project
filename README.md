@@ -39,3 +39,7 @@ Customer class with gRPC client stubs to send transaction events to the bank bra
 #### `input.json`:
 
 Input file containing a list of branch processes and customer processes with transaction events.
+
+#### `output.txt`:
+
+The output file containing each Customer's `recvMsg` list. This file will be overwritten each time the program is ran.
