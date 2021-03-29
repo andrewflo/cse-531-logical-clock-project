@@ -1,14 +1,14 @@
 <h1>CSE 531: gRPC Project</h1>
 
-Andrew Flores, Spring 2021 B
+Andrew Flores
 
-CSE 531: Distributed and Multiprocessor Operating Systems
+CSE 531: Distributed and Multiprocessor Operating Systems, Spring 2021 (B)
 
 
 
 ## Quick Start
 
-1. `git clone` the repo and `cd` into the repo directory
+1. `git clone` the repo and `cd` into the project
 2. `python3 -m venv env` to initialize the virtual environment
 3. `source env/bin/activate` to activate the virtual environment
 4. `pip install -r requirements.txt` to install project dependencies
@@ -35,7 +35,11 @@ The following important files are included in this project:
 
 ### Input File
 
-The input file should be in `.json` format and is passed to the program via a command line argument.
+The input file should be in `.json` format and is passed to the program via a command line argument:
+
+```sh
+python main.py input.json
+```
 
 The following `input.json` file is included from the CSE 531 gRPC Project instructions:
 
