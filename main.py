@@ -33,7 +33,6 @@ def serveCustomer(customer):
     output_file = open("output.txt", "a")
     output_file.write(str(output) + "\n")
     output_file.close()
-    # print(str(output))
 
 
 # Parse JSON & create objects/processes
