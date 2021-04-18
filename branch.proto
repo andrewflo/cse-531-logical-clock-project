@@ -4,12 +4,15 @@ message MsgRequest {
 	int32 id = 1;
 	string interface = 2;
 	int32 money = 3;
+	int32 clock = 4;
 }
 
 message MsgResponse {
-	string interface = 1;
-	string result = 2;
-	int32 money = 3;
+	int32 id = 1;
+	string interface = 2;
+	string result = 3;
+	int32 money = 4;
+	int32 clock = 5;
 }
 
 service Branch {
