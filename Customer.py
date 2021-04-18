@@ -35,6 +35,9 @@ class Customer:
                 MsgRequest(id=event["id"], interface=event["interface"], money=event["money"], clock=self.clock)
             )
 
+            # Update local clock
+            self.clock = max(self.clock, response.clock) + 1
+
             # Create msg to be appended to self.recvMsg list
             msg = {"interface": response.interface, "result": response.result}
 
