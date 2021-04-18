@@ -11,7 +11,6 @@ import branch_pb2_grpc
 from Branch import Branch
 from Customer import Customer
 
-
 # Start branch gRPC server process
 def serveBranch(branch):
     branch.createStubs()
@@ -19,8 +18,18 @@ def serveBranch(branch):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     branch_pb2_grpc.add_BranchServicer_to_server(branch, server)
     port = str(50000 + branch.id)
+    print(colored("Serving branch #" + str(branch.id) + " on :" + port, "green"))
     server.add_insecure_port("[::]:" + port)
     server.start()
+
+    sleep(0.5 * branch.id)
+    output_array = json.load(open("output.json"))
+    output_array.append({"pid": branch.id, "data": branch.output()})
+    output = json.dumps(output_array, indent=4)
+    output_file = open("output.json", "w")
+    output_file.write(output)
+    output_file.close()
+
     server.wait_for_termination()
 
 
@@ -28,11 +37,6 @@ def serveBranch(branch):
 def serveCustomer(customer):
     customer.createStub()
     customer.executeEvents()
-
-    output = customer.output()
-    output_file = open("output.txt", "a")
-    output_file.write(str(output) + "\n")
-    output_file.close()
 
 
 # Parse JSON & create objects/processes
@@ -80,9 +84,35 @@ def createProcesses(processes):
     for customerProcess in customerProcesses:
         customerProcess.join()
 
+    # Allow branches to complete output before terminating
+    sleep(1)
+
     # Terminate Branch processes
     for branchProcess in branchProcesses:
         branchProcess.terminate()
+
+
+# Write events to output.json
+def outputEvents():
+    output = json.load(open("output.json"))
+    events_dict = {}
+
+    for pid in output:
+        for event in pid["data"]:
+            if event["id"] in events_dict.keys():
+                events_dict[event["id"]].append(event)
+            else:
+                events_dict[event["id"]] = [event]
+
+    # print(str(json.dumps(events_dict, indent=4)))
+
+    for event in events_dict:
+        data = sorted(events_dict[event], key=lambda event: event["clock"])
+        output.append({"eventid": event, "data": data})
+
+    output_file = open("output.json", "w")
+    output_file.write(json.dumps(output, indent=4))
+    output_file.close()
 
 
 if __name__ == "__main__":
@@ -96,10 +126,16 @@ if __name__ == "__main__":
         input = json.load(open(args.input_file))
 
         # Initialize output file
-        open("output.txt", "w").close()
+        output_file = open("output.json", "w")
+        output_file.write("[]")
+        output_file.close()
 
         # Create objects/processes from input file
         createProcesses(input)
+
+        # Write events to output file
+        sleep(1.5)
+        outputEvents()
     except FileNotFoundError:
         print(colored("Could not find input file '" + args.input_file + "'", "red"))
     except json.decoder.JSONDecodeError:

@@ -13,6 +13,7 @@ class Customer:
         self.events = events
         self.recvMsg = list()
         self.stub = None
+        self.clock = 1
 
     # Setup gRPC channel & client stub for branch
     def createStub(self):
@@ -20,16 +21,18 @@ class Customer:
         channel = grpc.insecure_channel("localhost:" + port)
         self.stub = branch_pb2_grpc.BranchStub(channel)
 
+        print(colored("Customer #" + str(self.id) + " on branch on :" + port, "blue"))
+
     # Send gRPC request for each event
     def executeEvents(self):
         for event in self.events:
             # Sleep 3 seconds for 'query' events
             if event["interface"] == "query":
-                sleep(3)
+                sleep(0.25)
 
             # Send request to Branch server
             response = self.stub.MsgDelivery(
-                MsgRequest(id=event["id"], interface=event["interface"], money=event["money"])
+                MsgRequest(id=event["id"], interface=event["interface"], money=event["money"], clock=self.clock)
             )
 
             # Create msg to be appended to self.recvMsg list
