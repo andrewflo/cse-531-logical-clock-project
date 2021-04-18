@@ -1,4 +1,4 @@
-<h1>CSE 531: gRPC Project</h1>
+<h1>CSE 531: Logical Clock Project</h1>
 
 Andrew Flores
 
@@ -13,7 +13,7 @@ CSE 531: Distributed and Multiprocessor Operating Systems, Spring 2021 (B)
 3. `source env/bin/activate` to activate the virtual environment
 4. `pip install -r requirements.txt` to install project dependencies
 5. `python main.py input.json` to start the program
-6. The result will be written to `output.txt`
+6. The result will be written to `output.json`
 
 ## Overview
 
@@ -25,7 +25,7 @@ The following important files are included in this project:
 
 * `input.json`: Input file containing a list of branch processes and customer processes with transaction events.
 
-* `output.txt`: The output file containing each Customer's `recvMsg` output. This file will be overwritten each time the program is ran.
+* `output.json`: The output file containing an array of each branch's events and each event grouped by eventID & sorted by clock value. (This file will be overwritten each time the program is ran).
 
 * `branch.proto`: Protocol buffer file defining RPC messages & services. This file has already been compiled to produce the `branch_pb2.py` & `branch_pb2_grpc.py` files.
 
@@ -41,7 +41,7 @@ The input file should be in `.json` format and is passed to the program via a co
 python main.py input.json
 ```
 
-The following `input.json` file is included from the CSE 531 gRPC Project instructions:
+The following `input.json` file is included from the CSE 531 Logical Clock Project instructions:
 
 ```json
 [
