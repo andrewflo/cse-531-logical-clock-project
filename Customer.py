@@ -26,7 +26,7 @@ class Customer:
     # Send gRPC request for each event
     def executeEvents(self):
         for event in self.events:
-            # Sleep 3 seconds for 'query' events
+            # Sleep for 'query' events
             if event["interface"] == "query":
                 sleep(0.25)
 
